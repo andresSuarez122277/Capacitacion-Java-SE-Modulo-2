@@ -3,26 +3,128 @@
  */
 package com.tcs.tallerListas;
 
+import com.tcs.tallerListas.beans.Estudiante;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
 public class IngresoEstudiantes {
 
 	public static void main(String[] args) {
+
+		List<Estudiante> estudiantes = new ArrayList<>();
+		List<Estudiante> estJardin = new ArrayList<>();
+		List<Estudiante> estPrimero = new ArrayList<>();
+		List<Estudiante> estSegundo = new ArrayList<>();
+		List<Estudiante> estTercero = new ArrayList<>();
+		List<Estudiante> estCuarto = new ArrayList<>();
+		List<Estudiante> estQuinto = new ArrayList<>();
 		
 		System.out.println("################ Ingreso de estudiantes ################");
 		
 		try {
 			Scanner data = new Scanner(new File("src/main/resources/data.txt"));
-			
+
 			while (data.hasNextLine()) {
 				String[] estData = data.nextLine().split(",");
 
+				try{// se ingresa el estudiante a la lista cuyo valor edad es numérico
+					Estudiante estudiante = new Estudiante();
+					estudiante.setEdad(Integer.parseInt(estData[2]));
+					estudiante.setIdentificacion(estData[0]);
+					estudiante.setNombre(estData[1]);
+					estudiante.setEsAprobado(estData[3]);
+					estudiante.setGrado(estData[4]);
+					estudiantes.add(estudiante);
+				}catch (NumberFormatException e) {
+					System.out.println("Error leyendo el campo edad del estudiante "+estData[1]);
+					System.out.println(e.getMessage());
+					System.out.println(e.getStackTrace());
+				}
 			}
-		} catch (FileNotFoundException e) {
 
+			String acumEstConTI = "\n** Estudiantes con documento 'TI' **"
+					, acumEstRepiten = "\n** Estudiantes que deberán repetir el año **";
+			int contEdad6y10 = 0;
+
+			for(Estudiante e : estudiantes){
+				if(e.getEdad() >= 6 && e.getEdad() <= 10)
+					contEdad6y10++;
+				switch (e.getGrado()){
+					case "Jardin":
+						estJardin.add(e);
+						break;
+					case "Primero":
+						estPrimero.add(e);
+						break;
+					case "Segundo":
+						estSegundo.add(e);
+						break;
+					case "Tercero":
+						estTercero.add(e);
+						break;
+					case "Cuarto":
+						estCuarto.add(e);
+						break;
+					case "Quinto":
+						estQuinto.add(e);
+						break;
+				}
+
+				if(e.getIdentificacion().startsWith("TI")){
+					acumEstConTI += "\nEdad: "+e.getEdad() + "\nGrado: "+e.getGrado()+"\n";
+				}
+				if(e.getEsAprobado().equals("reprueba")){
+					acumEstRepiten += "\nNombre: "+e.getNombre();
+				}
+			}
+			System.out.println("\nNúmero total de estudiantes: "+estudiantes.size());
+			System.out.printf("\nNúmero de estudiantes entre los 6 y los 10 años de edad: "+contEdad6y10);
+
+			System.out.println("\n\nEstudiantes de grado 'Jardin'");
+			for(Estudiante e : estJardin){
+				System.out.println(e.toString());
+			}
+
+			System.out.println("\n\nEstudiantes de grado 'Primero'");
+			for(Estudiante e : estPrimero){
+				System.out.println(e.toString());
+			}
+
+			System.out.println("\n\nEstudiantes de grado 'Segundo'");
+			for(Estudiante e : estSegundo){
+				System.out.println(e.toString());
+			}
+
+			System.out.println("\n\nEstudiantes de grado 'Tercero'");
+			for(Estudiante e : estTercero){
+				System.out.println(e.toString());
+			}
+
+			System.out.println("\n\nEstudiantes de grado 'Cuarto'");
+			for(Estudiante e : estCuarto){
+				System.out.println(e.toString());
+			}
+
+			System.out.println("\n\nEstudiantes de grado 'Quinto'");
+			for(Estudiante e : estQuinto){
+				System.out.println(e.toString());
+			}
+
+			//Estudiantes cuyo documento empiezan con 'TI'
+			System.out.println(acumEstConTI);
+
+			//Estudiantes que deben repetir el año
+			System.out.println(acumEstRepiten);
+
+		} catch (FileNotFoundException e) {
+			System.out.println("Error leyendo el archivo !");
+			System.out.println(e.getMessage());
+			System.out.println(e.getStackTrace());
 		}
 	}
 }
