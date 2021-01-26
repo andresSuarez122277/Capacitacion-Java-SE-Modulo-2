@@ -54,8 +54,10 @@ public class ProcesarDatos {
 	}
 
 	public void leeryEscribirArchivo(){
+		Scanner scanner = new Scanner(System.in);
+
 		try {
-			Scanner scanner = new Scanner(new File("src/main/java/com/capacitacion/excepciones/datos/data.txt"));
+			scanner = new Scanner(new File("src/main/java/com/capacitacion/excepciones/datos/data.txt"));
 			File archivo = new File("src/main/java/com/capacitacio/excepciones/datos/data2.txt");
 			FileWriter escritor = new FileWriter(archivo);
 
@@ -69,7 +71,6 @@ public class ProcesarDatos {
 				}
 			}
 
-			scanner.close();
 			escritor.close();
 		}catch(FileNotFoundException e){//Excepción para la lectura del archivo
 			System.out.println("Ruta de archivo no encontrado");
@@ -77,6 +78,8 @@ public class ProcesarDatos {
 		}catch (IOException e){//Excepción para la escritura del archivo
 			System.out.println("No se encuentra archivo o bloqueado");
 			System.out.println(e.getStackTrace());
+		}finally {
+			scanner.close();
 		}
 	}
 	
