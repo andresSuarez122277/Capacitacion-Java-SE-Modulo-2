@@ -66,7 +66,7 @@ public class Busqueda {
 		insercion();
 		int bajo = 0, alto = arreglo.length-1;
 
-		while(resultado == -1 && bajo > alto){
+		while(resultado == -1 && bajo < alto){
 			int central = (bajo + alto)/2;
 			if(arreglo[central] == clave){
 				resultado = central;
